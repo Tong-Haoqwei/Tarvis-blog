@@ -21,19 +21,69 @@ const { title } = Astro.props;
     <script is:inline>
       (function() {
         var t = localStorage.getItem('theme');
-        if (t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        var isDark = t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        if (isDark) {
           document.documentElement.classList.add('dark');
         }
+        document.documentElement.style.colorScheme = isDark ? 'dark' : 'light';
       })();
     </script>
+    <style is:global>
+      body {
+        background-color: #fafaf9;
+        color: #111827;
+      }
+      html.dark body {
+        background-color: #030712;
+        color: #f3f4f6;
+      }
+    </style>
   </head>
-  <body class="min-h-screen bg-gray-50 text-gray-900 dark:bg-gray-950 dark:text-gray-100 antialiased">
+  <body class="min-h-screen bg-stone-50 text-gray-900 dark:bg-gray-950 dark:text-gray-100 antialiased">
     <Navbar />
     <slot />
-    <footer class="border-t border-gray-200 bg-white dark:border-gray-800/50 dark:bg-gray-950">
+    <footer class="border-t border-stone-200/80 bg-stone-100/60 dark:border-gray-800/50 dark:bg-gray-950">
       <div class="mx-auto max-w-4xl px-4 py-6 text-center text-xs text-gray-400 dark:text-gray-500 sm:px-6">
         &copy; {new Date().getFullYear()} Tarvis Blog. All rights reserved.
       </div>
     </footer>
+
+    <style is:global>
+      ::view-transition-old(root) {
+        animation: 0.35s ease-in-out both vt-fade-out;
+      }
+      ::view-transition-new(root) {
+        animation: 0.35s ease-in-out both vt-fade-in;
+      }
+      ::view-transition-group(theme-toggle-btn) {
+        animation-duration: 0.01ms;
+      }
+      ::view-transition-old(theme-toggle-btn) {
+        animation: none;
+        opacity: 0;
+      }
+      ::view-transition-new(theme-toggle-btn) {
+        animation: none;
+      }
+
+      @keyframes vt-fade-out {
+        from { opacity: 1; }
+        to { opacity: 0; }
+      }
+      @keyframes vt-fade-in {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .sun, .moon, .stars {
+          transition-duration: 0.01ms !important;
+        }
+        ::view-transition-old(root),
+        ::view-transition-new(root) {
+          animation-duration: 0.01ms !important;
+        }
+      }
+    </style>
   </body>
 </html>

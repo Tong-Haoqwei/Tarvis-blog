@@ -50,7 +50,7 @@ const groupedPicks = picks.reduce((acc, pick) => {
     <div class="space-y-10">
       {Object.entries(groupedPicks).map(([category, categoryPicks]) => (
         <section>
-          <h2 class="mb-4 text-lg font-medium text-gray-800 dark:text-gray-200">
+          <h2 class="mb-4 border-b border-stone-200 pb-3 text-lg font-medium text-gray-800 dark:border-gray-700 dark:text-gray-200">
             {category}
           </h2>
           <div class="grid gap-5 sm:grid-cols-2">
