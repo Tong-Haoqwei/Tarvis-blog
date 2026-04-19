@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostCard from '../components/PostCard.astro';
+import { getCollection } from 'astro:content';
+
+const allPosts = await getCollection('posts');
+const posts = allPosts.sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime()
+);
+---
+
+<BaseLayout title="Tarvis Blog - 技术博客">
+  <main class="mx-auto max-w-2xl px-4 py-12 sm:px-6 sm:py-20">
+    <header class="mb-12">
+      <h1 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-gray-200 sm:text-2xl">
+        Blog
+      </h1>
+    </header>
+
+    <div class="divide-y divide-gray-100 dark:divide-gray-800/40">
+      {posts.map((post) => (
+        <PostCard
+          title={post.data.title}
+          date={post.data.date}
+          tags={post.data.tags}
+          excerpt={post.data.excerpt}
+          slug={post.id}
+        />
+      ))}
+    </div>
+  </main>
+</BaseLayout>

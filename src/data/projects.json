@@ -1,0 +1,44 @@
+[
+  {
+    "name": "MiniMind",
+    "description": "从零开始训练一个小型 GPT 大语言模型，包含完整的预训练、SFT、RLHF 流程。",
+    "techStack": ["Python", "PyTorch", "Transformer"],
+    "github": "https://github.com/jingyaogong/minimind",
+    "icon": "brain"
+  },
+  {
+    "name": "Tarvis Blog",
+    "description": "基于 Astro 和 Tailwind CSS 构建的现代技术博客，支持 Markdown 写作和代码高亮。",
+    "techStack": ["Astro", "Tailwind", "TypeScript"],
+    "github": "https://github.com/Tong-Haoqwei/Tarvis-blog",
+    "icon": "blog"
+  },
+  {
+    "name": "DevOps Dashboard",
+    "description": "实时监控 Kubernetes 集群状态的可视化面板，支持多集群管理和告警配置。",
+    "techStack": ["React", "Go", "K8s"],
+    "github": "https://github.com/jingyaogong/minimind",
+    "icon": "dashboard"
+  },
+  {
+    "name": "API Gateway",
+    "description": "高性能 API 网关服务，支持限流、熔断、认证和动态路由配置。",
+    "techStack": ["Rust", "Tokio", "Redis"],
+    "github": "https://github.com/jingyaogong/minimind",
+    "icon": "server"
+  },
+  {
+    "name": "CLI Toolkit",
+    "description": "命令行工具集，提供项目脚手架、代码生成和自动化部署功能。",
+    "techStack": ["Node.js", "Commander", "Inquirer"],
+    "github": "https://github.com/jingyaogong/minimind",
+    "icon": "terminal"
+  },
+  {
+    "name": "Data Pipeline",
+    "description": "分布式数据处理管道，支持实时流处理和批量 ETL 任务调度。",
+    "techStack": ["Python", "Kafka", "Spark"],
+    "github": "https://github.com/jingyaogong/minimind",
+    "icon": "database"
+  }
+]

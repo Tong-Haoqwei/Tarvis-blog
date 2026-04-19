@@ -1,0 +1,72 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PickCard from '../components/PickCard.astro';
+import { getCollection, type CollectionEntry } from 'astro:content';
+
+const allPicks = await getCollection('picks');
+const picks = allPicks.sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime()
+);
+
+const categories = [
+  { name: 'AI Agent 原理', tags: ['AI Agent', 'ReAct'] },
+  { name: '神经网络与基础', tags: ['神经网络', '深度学习', 'Transformer'] },
+  { name: '工程实践', tags: ['工程实践', 'Claude Code', 'CI/CD'] },
+  { name: '协议标准', tags: ['MCP', 'A2A'] },
+];
+
+function getCategory(pick: CollectionEntry<'picks'>) {
+  for (const cat of categories) {
+    for (const tag of pick.data.tags) {
+      if (cat.tags.includes(tag)) {
+        return cat.name;
+      }
+    }
+  }
+  return '其他';
+}
+
+const groupedPicks = picks.reduce((acc, pick) => {
+  const cat = getCategory(pick);
+  if (!acc[cat]) {
+    acc[cat] = [];
+  }
+  acc[cat].push(pick);
+  return acc;
+}, {} as Record<string, typeof picks>);
+---
+
+<BaseLayout title="精选集 - Tarvis Blog">
+  <main class="mx-auto max-w-4xl px-4 py-10 sm:px-6 sm:py-16">
+    <header class="mb-10">
+      <h1 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-gray-200 sm:text-2xl">
+        精选集
+      </h1>
+      <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+        精选 AI 与大语言模型相关的优质技术文章
+      </p>
+    </header>
+
+    <div class="space-y-10">
+      {Object.entries(groupedPicks).map(([category, categoryPicks]) => (
+        <section>
+          <h2 class="mb-4 text-lg font-medium text-gray-800 dark:text-gray-200">
+            {category}
+          </h2>
+          <div class="grid gap-5 sm:grid-cols-2">
+            {categoryPicks.map((pick) => (
+              <PickCard
+                title={pick.data.title}
+                date={pick.data.date}
+                author={pick.data.author}
+                source={pick.data.source}
+                summary={pick.data.summary}
+                tags={pick.data.tags}
+              />
+            ))}
+          </div>
+        </section>
+      ))}
+    </div>
+  </main>
+</BaseLayout>

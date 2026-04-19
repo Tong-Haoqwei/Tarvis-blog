@@ -1,0 +1,63 @@
+name: 📝 博客文章
+description: 创建一篇新的博客文章
+title: "[Blog] "
+labels: ["blog"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢你创建博客文章！请填写以下信息。
+        文章将自动同步到博客网站。
+
+  - type: input
+    id: title
+    attributes:
+      label: 文章标题
+      description: 文章的标题，将显示在博客首页和文章详情页
+      placeholder: "例如：深入理解 React Server Components"
+    validations:
+      required: true
+
+  - type: input
+    id: date
+    attributes:
+      label: 发布日期
+      description: 文章的发布日期，格式为 YYYY-MM-DD
+      placeholder: "例如：2026-04-17"
+    validations:
+      required: true
+
+  - type: input
+    id: tags
+    attributes:
+      label: 标签
+      description: 文章标签，用逗号分隔
+      placeholder: "例如：React, 前端, 架构"
+    validations:
+      required: false
+
+  - type: textarea
+    id: excerpt
+    attributes:
+      label: 文章摘要
+      description: 简短描述文章内容，将显示在文章卡片上
+      placeholder: "例如：从原理到实践，全面解析 React Server Components 的工作机制..."
+    validations:
+      required: false
+
+  - type: textarea
+    id: content
+    attributes:
+      label: 文章正文
+      description: 使用 Markdown 格式编写文章内容
+      placeholder: |
+        ## 标题
+
+        正文内容...
+
+        ```javascript
+        console.log('Hello World');
+        ```
+      render: markdown
+    validations:
+      required: true

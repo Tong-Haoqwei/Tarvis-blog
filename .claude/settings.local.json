@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git config *)",
+      "Bash(git remote *)",
+      "Bash(git branch *)",
+      "Bash(git push *)",
+      "Bash(gh auth *)",
+      "Bash(curl -s -H \"Accept: application/vnd.github+json\" \"https://api.github.com/users/Tong-Haoqwei/repos?per_page=100\")",
+      "Bash(curl -s \"https://api.github.com/users/Tong-Haoqwei/repos?per_page=100\")",
+      "Bash(curl *)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:tarvis-blog.vercel.app)",
+      "Bash(npm i *)"
+    ]
+  }
+}

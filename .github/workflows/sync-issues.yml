@@ -1,0 +1,78 @@
+name: Sync Issues to Posts
+
+on:
+  schedule:
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+  issues:
+    types: [opened, edited, closed, reopened, labeled, unlabeled]
+
+permissions:
+  contents: write
+  issues: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Sync Issues to Markdown
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          echo "=== Environment ==="
+          echo "GITHUB_REPOSITORY=$GITHUB_REPOSITORY"
+          echo "GITHUB_TOKEN length=${#GITHUB_TOKEN}"
+          echo "=== Running sync script ==="
+          node scripts/sync-issues.mjs 2>&1 | tee sync-output.log
+          echo "=== Exit code: $? ==="
+
+      - name: Debug - List posts directory
+        run: ls -la src/content/posts/
+
+      - name: Debug - Git status
+        run: git status
+
+      - name: Upload sync log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sync-log
+          path: sync-output.log
+
+      - name: Check for changes
+        id: check_changes
+        run: |
+          if git diff --quiet src/content/posts/ && [ -z "$(git ls-files --others --exclude-standard src/content/posts/)" ]; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            echo "No changes detected"
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "Changes detected!"
+            git status src/content/posts/
+          fi
+
+      - name: Commit and push changes
+        if: steps.check_changes.outputs.has_changes == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add src/content/posts/
+          git diff --cached --quiet || git commit -m "docs: sync issues to posts"
+          git push
